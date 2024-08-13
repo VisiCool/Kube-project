@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Worker Nodes
+  worker1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: worker1
+    networks:
+      - k8s_network
+
+  worker2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: worker2
+    networks:
+      - k8s_network
+
+  # Etcd Nodes
+  etcd1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etcd1
+    networks:
+      - k8s_network
+
+  etcd2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etcd2
+    networks:
+      - k8s_network
+
+  etcd3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: etcd3
+    networks:
+      - k8s_network
+
+  # Control Plane Nodes
+  controlplane1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: controlplane1
+    networks:
+      - k8s_network
+
+  controlplane2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: controlplane2
+    networks:
+      - k8s_network
+
+  controlplane3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: controlplane3
+    networks:
+      - k8s_network
+
+networks:
+  k8s_network:
+    driver: bridge
