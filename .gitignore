@@ -1,0 +1,26 @@
+# Ignore all files and directories by default
+*
+
+# Except these files and directories
+!.gitignore
+!README.md
+!Dockerfile
+!docker-compose.yml
+!scripts/
+!*.sh
+!*.yml
+!*.yaml
+!*.png
+!*.jpg
+!*.jpeg
+!*.gif
+
+# Ignore temporary or backup files
+*.tmp
+*.bak
+*.swp
+
+# Ignore any logs or build artifacts
+*.log
+dist/
+build/
