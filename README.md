@@ -60,7 +60,7 @@ Contributions to this project are welcome! Feel free to submit bug reports, feat
 
 ## License 📜
 
-[Insert appropriate license information]
+This project is licensed under the [MIT License](./LICENSE)
 
 ---
 
