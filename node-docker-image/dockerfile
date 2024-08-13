@@ -1,0 +1,17 @@
+#Use the official ubuntu image for k8n nodes 
+FROM docker.io/library/ubuntu:latest 
+
+#Environment variable to enable non-interactive mode
+ENV DEBIAN_FRONTEND=noninteractive
+
+#Copy the basic dependencies and utilities installation script into the image
+COPY install-dep-ut.sh /tmp/install-dep-ut.sh
+
+#Make script executable 
+RUN chmod +x /tmp/install-dep-ut.sh
+
+#Run script
+RUN /tmp/install-dep-ut.sh
+
+#Specify the default command
+CMD ["bash"]
