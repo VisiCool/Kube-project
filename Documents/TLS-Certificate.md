@@ -31,7 +31,7 @@ These certificates are used by various clients to make secure API requests to th
 
 #### CA for Kubernetes
 
-The following certificates are issued by the Kubernetes Certificate Authority (CA) for various clients and servers:
+The following certificates are issued by the "Kubernetes-CA" Certificate Authority (CA) for various clients and servers:
 
 - *Client Certificates*:
   - admin.crt, admin.key → Kube API Server
@@ -44,7 +44,7 @@ The following certificates are issued by the Kubernetes Certificate Authority (C
 
 #### CA for etcd
 
-For simplicity, the same Kubernetes CA is used to issue the following server certificates for etcd:
+For simplicity, the same "Kubernetes-CA" is used to issue the following server certificates for etcd:
 
 - *Server Certificates*:
   - etcd-server.crt, etcd-server.key ← Kube API Server
