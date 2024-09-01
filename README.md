@@ -68,5 +68,5 @@ This project is licensed under the [Apache-2.0 license](./LICENSE)
 
 ## Acknowledgements
 
-- Some portions of the code were inspired by and adapted from [Kubernetes the Hard Way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way).
+Some portions of the code were inspired by and adapted from [Kubernetes the Hard Way by Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way).
 
