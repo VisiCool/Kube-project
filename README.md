@@ -60,7 +60,7 @@ Contributions to this project are welcome! Feel free to submit bug reports, feat
 
 ## License 📜
 
-This project is licensed under the [MIT License](./LICENSE)
+This project is licensed under the [Apache-2.0 license](./LICENSE)
 
 ---
 
