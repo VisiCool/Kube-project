@@ -22,6 +22,7 @@ apt-get install -y \
     gzip \
     software-properties-common \
     openssl \
+    jq \
     ca-certificates
 
 # Disable all swap space 

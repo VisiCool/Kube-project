@@ -34,11 +34,11 @@ copy_certificates() {
     local path=$3
 
     COMP_TYPE="${TYPE}${i}"
-        # Create the necessary directory on the remote host
-        ssh root@$host "mkdir -p $path" 
+    # Create the necessary directory on the remote host
+    ssh root@$host "mkdir -p $path" 
 
-        # Copy the CA certificate
-        scp $CA_CERT root@$host:$path
+    # Copy the CA certificate
+    scp $CA_CERT root@$host:$path
 
     # Copy the specific certificate and key files
     scp $COMP_TYPE.crt root@$host:$path/$COMO_TYPE
