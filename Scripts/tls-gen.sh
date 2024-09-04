@@ -1,52 +1,75 @@
 #!/bin/bash
 
 # File paths
-KUBE_COMP="kube-components.json"
-NODES_FILE="node_counts.json"
+KUBE_COMP="Kube-project/Scripts/kube-components.json"
+NODES_FILE="Kube-project/node_counts.json"
 CA_KEY="ca.key"
 CA_CERT="ca.crt"
 CONFIG_FILE="openssl_k8s.conf"
 
-#create ca.key and ca.cert
-openssl genrsa -out "$CA_KEY" 4096
-openssl req -x509 -new -sha512 -key "$CA_KEY" -days 365 -config "$CONFIG_FILE" -out "$CA_CERT"
+# ... existing code for CA key and cert generation ...
 
 # Read node counts from JSON
 ETCD_COUNT=$(jq -r '.["etcd-server"]' "$NODES_FILE")
 CONTROLPLANE_COUNT=$(jq -r '.["controlplane"]' "$NODES_FILE")
 WORKER_COUNT=$(jq -r '.["workernode"]' "$NODES_FILE")
 
-# Function to generate keys and certificates based on JSON data
+# Function to generate keys and certificates
 generate_certs() {
-    local TYPE="$1"
+    local type=$1
+    local i=$2
 
-    COMO_TYPE="${TYPE}${i}"
-    openssl genrsa -out "${COMP_TYPE}.key" 4096
-    openssl req -new -key "${COMP_TYPE}.key" -sha256 -config openssl_k8s.conf -section "$type" -out "${COMP_TYPE}.csr"
-    openssl x509 -req -days 180 -in "${COMP_TYPE}.csr" -sha256 -CA "$CA_CERT" -CAkey "$CA_KEY" -CAcreateserial -out "${COMP_TYPE}.crt"
-    echo "Generated ${COMP_TYPE}.key and ${COMP_TYPE}.crt"
+    NAME="${type}${i}"
+    openssl genrsa -out "${NAME}.key" 4096
+    openssl req -new -key "${NAME}.key" -sha256 -config "$CONFIG_FILE" -section "$type" -out "${NAME}.csr"
+    openssl x509 -req -days 180 -in "${NAME}.csr" -sha256 -CA "$CA_CERT" -CAkey "$CA_KEY" -CAcreateserial -out "${NAME}.crt"
+    echo "Generated ${NAME}.key and ${NAME}.crt"
 }
 
-# Function to copy certificates and keys in host directory
+# Function to copy certificates and keys to host directory
 copy_certificates() {
-    local TYPE=$1
+    local type=$1
     local host=$2
     local path=$3
+    local i=$4
 
-    COMP_TYPE="${TYPE}${i}"
-    # Create the necessary directory on the remote host
-    ssh root@$host "mkdir -p $path" 
-
-    # Copy the CA certificate
+    NAME="${type}${i}"
+    ssh root@$host "mkdir -p $path"
     scp $CA_CERT root@$host:$path
+    scp $NAME.crt root@$host:$path/$NAME.crt
+    scp $NAME.key root@$host:$path/$NAME.key
+}
 
-    # Copy the specific certificate and key files
-    scp $COMP_TYPE.crt root@$host:$path/$COMO_TYPE
-    scp $COMP_TYPE.key root@$host:$path/$COMO_TYPE
+# Process components
+process_components() {
+    local cert_type=$1
+    local components=$(jq -r ".$cert_type | keys[]" "$KUBE_COMP")
+
+    for component in $components; do
+        local node_type=$(jq -r ".$cert_type[\"$component\"][0]" "$KUBE_COMP")
+        local path=$(jq -r ".$cert_type[\"$component\"][1]" "$KUBE_COMP")
+        
+        if [ "$cert_type" == "single-certificate" ]; then
+            generate_certs "$component" ""
+            for i in $(seq 1 $CONTROLPLANE_COUNT); do
+                copy_certificates "$component" "controlplane$i" "$path" ""
+            done
+        else
+            local count
+            case $node_type in
+                "etcd-node") count=$ETCD_COUNT ;;
+                "controlplane") count=$CONTROLPLANE_COUNT ;;
+                "node") count=$WORKER_COUNT ;;
+            esac
+            
+            for i in $(seq 1 $count); do
+                generate_certs "$component" "$i"
+                copy_certificates "$component" "${node_type}${i}" "$path" "$i"
+            done
+        fi
     done
 }
 
-
-
-
-
+# Main execution
+process_components "single-certificate"
+process_components "multiple-certificate"

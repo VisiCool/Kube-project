@@ -1,7 +1,6 @@
 {
     "single-certificate": {
         "api-server": ["controlplane", "/etc/kubernetes/pki/"],
-        "etcd-server": ["etcd-node", "/etc/kubernetes/pki/etcd/"],
         "apiserver-kubelet-client": ["controlplane", "/etc/kubernetes/pki/"],
         "apiserver-etcd-client": ["controlplane", "/etc/kubernetes/pki/"]
     },
@@ -11,6 +10,7 @@
         "kubelet": ["node", "/var/lib/kubelet/pki/"],
         "kube-proxy": ["node", "/etc/kubernetes/pki/"],
         "controller-manager": ["controlplane", "/etc/kubernetes/pki/"],
-        "scheduler": ["controlplane", "/etc/kubernetes/pki/"]
+        "scheduler": ["controlplane", "/etc/kubernetes/pki/"],
+        "etcd-server": ["etcd-node", "/etc/kubernetes/pki/etcd/"]
     }
 }
