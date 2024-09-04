@@ -5,13 +5,18 @@ FROM docker.io/library/ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 #Copy the basic dependencies and utilities installation script into the image
-COPY install-dep-ut.sh /tmp/install-dep-ut.sh
+COPY  Docker-Container/Setup-utilities.sh /tmp/Setup-utilities.sh
 
 #Make script executable 
-RUN chmod +x /tmp/install-dep-ut.sh
+RUN chmod +x /tmp/Setup-utilities.sh
 
 #Run script
-RUN /tmp/install-dep-ut.sh
+RUN /tmp/Setup-utilities.sh
+
+# Clean up
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Specify the default command
-CMD ["bash"]
+CMD ["sleep", "infinity"]
+

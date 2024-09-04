@@ -13,8 +13,8 @@ This repository chronicles the journey of constructing a Kubernetes cluster from
 ## Cluster Architecture 🗺️
 
 - *Total Nodes*: 
-  - *Control Plane Nodes*: 3 🧠
-  - *etcd Nodes*: 3 🗄️
+  - *Control Plane Nodes*: 2 🧠
+  - *etcd Nodes*: 2 🗄️
   - *Worker Nodes*: 2 👷‍♂️
 
  **Note**: The count of each Kubernetes component (Control Plane Nodes, etcd Nodes, Worker Nodes) can be adjusted as needed. These values should be specified in the `node_counts.json` file.

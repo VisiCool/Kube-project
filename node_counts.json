@@ -1,6 +1,6 @@
 {
-    "etcd-server": 3,
-    "controlplane": 3,
-    "workernode": 3
+    "etcd-server": 2,
+    "controlplane": 2,
+    "workernode": 1
 }
   
